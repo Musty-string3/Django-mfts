@@ -30,11 +30,17 @@
                 <div class="collapse navbar-collapse" id="navbarResponsive">
                     <ul class="navbar-nav mr-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="#">投稿一覧</a>
+                            <a class="nav-link {% block active_inquiry %}{% endblock %}" href="{% url 'post:inquiry' %}">お問い合わせ</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">検索</a>
-                        </li>
+                        {% if user.is_authenticated %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">投稿一覧</a>
+                            </li>
+                        {% else %}
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">検索</a>
+                            </li>
+                        {% endif %}
                     </ul>
                     <ul class="navbar-nav ml-auto">
                         {% if user.is_authenticated %}
@@ -56,6 +62,20 @@
 
         {% block header %} {% endblock %}
 
+        {% if messages %}
+        <div class="container">
+            <div class="row">
+                <div class="my-div-style w-100">
+                    <ul class="messages" style="list-style: none;">
+                        {% for message in messages %}
+                            <li {% if message.tags %} class='text-center {{ message.tags }}' {% endif %}>{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        
         {% block contents %} {% endblock %}
 
         <!--Footer-->
